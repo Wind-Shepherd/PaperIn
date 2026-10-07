@@ -1,5 +1,68 @@
 <div align="center">
 
+# 纸间 · 论文译读
+
+基于 [BabelDOC](https://github.com/funstory-ai/BabelDOC) 的 Windows 桌面 PDF 翻译器，面向英文论文阅读。拖入 PDF，填写兼容 OpenAI API 的翻译服务，即可生成译文或双语对照 PDF。
+
+</div>
+
+## 功能
+
+- 简洁的中文桌面界面，支持拖入或选择 PDF 文件。
+- 支持双语对照和仅译文输出，并可指定需要翻译的页码。
+- 输出默认保存在 Windows 桌面；可在界面中更改目录。
+- API 地址、模型名称和 API Key 会在本机记住。API Key 使用 Windows DPAPI 加密，并绑定当前 Windows 账户。
+- 使用前需要可用的翻译 API Key 和网络连接。首次运行可能需要下载版面识别模型和中文字库。
+
+## 下载和运行
+
+从 GitHub 的 **Releases** 页面下载 Windows 发布包 ZIP，解压后运行 `纸间论文翻译器.exe`。请保留解压出的整个 `纸间论文翻译器` 文件夹，不要单独移动 EXE。
+
+首次使用时，将 PDF 拖入窗口或点击选择文件，填写 API 地址、模型名称和 API Key，选择译稿类型后点击“开始翻译”。例如，DeepSeek API 的地址通常为 `https://api.deepseek.com`，模型名称请以服务商当前提供的选项为准。不同服务商可能使用不同的地址和模型名称。
+
+应用设置保存在 `%APPDATA%\ZhijianTranslator\settings.json`。分享程序文件夹不会包含这些本机设置。清除 API Key 可使用界面中的“清除密钥”操作。
+
+## 从源码打包（Windows）
+
+需要安装 Git 和 Conda。使用 Python 3.11、3.12 或 3.13 创建环境（BabelDOC 不支持 Python 3.14）：
+
+```powershell
+conda create -n paper-translator python=3.12 -y
+conda activate paper-translator
+```
+
+在项目根目录运行打包脚本：
+
+```powershell
+.\build-windows.ps1
+```
+
+脚本会安装项目及桌面依赖、运行 PyInstaller 并检查生成的程序。完成后发布目录为 `dist\纸间论文翻译器`。发布时请将该目录完整压缩后上传至 GitHub Release；不要只上传 EXE。`app.ico` 是应用图标资源。
+
+如果依赖已在指定 Conda 环境安装，可将 Python 路径传给脚本并跳过安装：
+
+```powershell
+.\build-windows.ps1 -PythonPath "D:\路径\到\环境\python.exe" -SkipInstall
+```
+
+## 注意事项
+
+- 翻译通过你配置的第三方 API 服务完成。费用、速率限制和隐私政策由所选服务商决定；请勿将 API Key 提交到 GitHub。
+- 软件会读取并处理你选择的 PDF。请确认你有权处理和翻译相关文档。
+- 本仓库基于 BabelDOC 修改。BabelDOC 使用 GNU Affero General Public License v3.0（AGPL-3.0）；请阅读仓库中的 [LICENSE](LICENSE)，并在分发修改版本时遵守其要求。
+
+## 问题反馈
+
+使用或打包遇到问题时，请在 GitHub **Issues** 中提供 Windows 版本、复现步骤和错误信息。提交前请检查日志和截图中没有 API Key、私人文档内容等敏感信息。
+
+---
+
+## BabelDOC 上游项目
+
+以下为上游 BabelDOC 的项目介绍和命令行文档；本仓库额外提供上述 Windows 桌面界面。
+
+<div align="center">
+
 <br/>
 
 <picture>

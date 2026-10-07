@@ -1,8 +1,0 @@
-conda activate babeldoc-py312
-babeldoc -c babeldoc.toml --files "论文完整路径.pdf"
-
-conda activate babeldoc-py312
-babeldoc -c babeldoc.toml --files "1.pdf"
-babeldoc -c babeldoc.toml --files "2.pdf"
-babeldoc -c babeldoc.toml --files "3.pdf"
-babeldoc -c babeldoc.toml --files "4.pdf"
