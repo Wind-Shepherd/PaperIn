@@ -1,6 +1,7 @@
 """Regression checks run inside the frozen EXE, without a real API key."""
 
 import asyncio
+import importlib
 import json
 import tempfile
 import traceback
@@ -15,12 +16,15 @@ def run_checks(report: Path, translation: bool = False) -> int:
     app = None
     try:
         # Import exactly the pipeline which failed only after pressing Start.
-        from babeldoc.format.pdf.high_level import async_translate
         from babeldoc.docvision.doclayout import DocLayoutModel
-        from babeldoc.translator.translator import BaseTranslator, OpenAITranslator
+        from babeldoc.format.pdf.high_level import async_translate
         from babeldoc.format.pdf.translation_config import TranslationConfig
+        from babeldoc.translator.translator import BaseTranslator
+        from babeldoc.translator.translator import OpenAITranslator
         from bitstring import BitStream
-        import tiktoken_ext.openai_public
+
+        importlib.import_module("tiktoken_ext.openai_public")
+        assert OpenAITranslator is not None
         assert BitStream(bin="1010").uint == 10
         result["checks"].append("frozen_translation_imports")
         from babeldoc.asynchronize import AsyncCallback
@@ -80,8 +84,10 @@ def run_checks(report: Path, translation: bool = False) -> int:
                 result["checks"].append("sample_pdf_to_chinese_and_bilingual_pdf_no_paid_api")
         else:
             from desktop_app import TranslatorApp
-            from desktop_settings import desktop_directory, load_settings
-            from tkinterdnd2 import COPY, REFUSE_DROP
+            from desktop_settings import desktop_directory
+            from desktop_settings import load_settings
+            from tkinterdnd2 import COPY
+            from tkinterdnd2 import REFUSE_DROP
             with tempfile.TemporaryDirectory(prefix="zhijian-ui-") as folder:
                 settings = Path(folder) / "settings.json"
                 app = TranslatorApp(settings_file=settings)

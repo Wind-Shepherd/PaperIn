@@ -4,17 +4,25 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import os
 import queue
+import sys
 import threading
 import tkinter as tk
 import traceback
-import sys
-from pathlib import Path
-from tkinter import filedialog, messagebox, ttk
-from tkinterdnd2 import DND_FILES, COPY, REFUSE_DROP, TkinterDnD
-from desktop_settings import desktop_directory, settings_path, load_settings, save_settings
 import webbrowser
+from pathlib import Path
+from tkinter import filedialog
+from tkinter import messagebox
+from tkinter import ttk
+
+from desktop_settings import desktop_directory
+from desktop_settings import load_settings
+from desktop_settings import save_settings
+from desktop_settings import settings_path
+from tkinterdnd2 import COPY
+from tkinterdnd2 import DND_FILES
+from tkinterdnd2 import REFUSE_DROP
+from tkinterdnd2 import TkinterDnD
 
 APP_NAME = "纸间 · 论文译读"
 BG = "#F5F2E9"
@@ -123,7 +131,7 @@ class TranslatorApp:
         self.canvas.configure(yscrollcommand=scrollbar.set)
         outer = tk.Frame(self.canvas, bg=BG, padx=28, pady=16)
         content_id = self.canvas.create_window(0, 0, window=outer, anchor="nw")
-        outer.bind("<Configure>", lambda event: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
+        outer.bind("<Configure>", lambda _event: self.canvas.configure(scrollregion=self.canvas.bbox("all")))
         self.canvas.bind("<Configure>", lambda event: self.canvas.itemconfigure(content_id, width=event.width))
         self.root.bind("<MouseWheel>", self._scroll)
 
