@@ -45,11 +45,15 @@ jobs:
           uv run python -m compileall babeldoc
           uv run babeldoc --help
 
+      - name: Create smoke-test PDF
+        run: |
+          uv run python -c "import pymupdf; doc = pymupdf.open(); page = doc.new_page(); page.insert_text((72, 72), 'CI PDF smoke test'); doc.save('ci-smoke-test.pdf'); doc.close()"
+
       - name: Lightweight no-secret PDF E2E
         run: |
           uv run babeldoc \
             --openai \
             --openai-api-key ci-dummy-key \
-            --files examples/ci/test.pdf \
+            --files ci-smoke-test.pdf \
             --only-parse-generate-pdf \
             --skip-scanned-detection
